@@ -38,4 +38,6 @@ int main()
     {
         cout << item << endl;
     }
+
+    return 0;
 }
