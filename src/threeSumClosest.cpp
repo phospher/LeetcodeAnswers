@@ -69,4 +69,6 @@ int main()
     int target = -2;
     Solution solution;
     cout << solution.threeSumClosest(nums, target) << endl;
+
+    return 0;
 }
