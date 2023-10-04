@@ -7,13 +7,12 @@ using namespace std;
 class Solution
 {
 public:
-    int minus = INT32_MAX;
+    int result = INT16_MAX;
 
     int threeSumClosest(vector<int> &nums, int target)
     {
         sort(nums.begin(), nums.end());
 
-        int result;
         for (int i = 0; i < nums.size(); i++)
         {
             if (i > 0 && nums[i] == nums[i - 1])
@@ -21,85 +20,45 @@ public:
                 continue;
             }
 
-            for (int j = i + 1; j < nums.size() - 1; j++)
+            int j = i + 1;
+            int k = nums.size() - 1;
+            while (j < k)
             {
-                if (j > i + 1 && nums[j] == nums[j - 1])
+                int sum = nums[i] + nums[j] + nums[k];
+                if (sum == target)
                 {
-                    continue;
+                    return sum;
                 }
 
-                if (nums[i] + nums[j] <= target)
+                check(sum, target);
+                if (sum > target)
                 {
-                    int k;
-                    for (k = j + 1; k < nums.size(); k++)
+                    int tempK = k - 1;
+                    while (j < tempK && nums[k] == nums[tempK])
                     {
-                        int tmp = target - nums[i] - nums[j] - nums[k];
-                        if (tmp <= 0)
-                        {
-                            if (tmp == 0)
-                            {
-                                return nums[i] + nums[j] + nums[k];
-                            }
-                            else
-                            {
-                                if (k > j + 1)
-                                {
-                                    result = check(nums[i], nums[j], nums[k - 1], target, result);
-                                }
-                                result = check(nums[i], nums[j], nums[k], target, result);
-                            }
-                            break;
-                        }
+                        tempK--;
                     }
-                    if (k == nums.size())
-                    {
-                        result = check(nums[i], nums[j], nums[k - 1], target, result);
-                    }
+                    k = tempK;
                 }
                 else
                 {
-                    int k;
-                    for (k = nums.size() - 1; k > j; k--)
+                    int tempJ = j + 1;
+                    while (tempJ < k && nums[j] == nums[tempJ])
                     {
-                        int tmp = target - nums[i] - nums[j] - nums[k];
-                        if (tmp >= 0)
-                        {
-                            if (tmp == 0)
-                            {
-                                return nums[i] + nums[j] + nums[k];
-                            }
-                            else
-                            {
-                                if (k < nums.size() - 1)
-                                {
-                                    result = check(nums[i], nums[j], nums[k + 1], target, result);
-                                }
-                                result = check(nums[i], nums[j], nums[k], target, result);
-                            }
-                            break;
-                        }
+                        tempJ++;
                     }
-                    if (k == j)
-                    {
-                        result = check(nums[i], nums[j], nums[k + 1], target, result);
-                    }
+                    j = tempJ;
                 }
             }
         }
         return result;
     }
 
-    int check(int num1, int num2, int num3, int target, int result)
+    void check(int current, int target)
     {
-        int minus1 = abs(target - num1 - num2 - num3);
-        if (minus1 < minus)
+        if (abs(current - target) < abs(result - target))
         {
-            minus = minus1;
-            return num1 + num2 + num3;
-        }
-        else
-        {
-            return result;
+            result = current;
         }
     }
 };
