@@ -34,9 +34,11 @@ public:
         ListNode *sortedListPrev = nullptr;
         while (listCurr != nullptr)
         {
+            ListNode *next = listCurr->next;
+            listCurr->next = nullptr;
             if (sortedListCurr == nullptr)
             {
-                result = new ListNode(listCurr->val);
+                result = listCurr;
                 sortedListCurr = result;
             }
             else
@@ -47,14 +49,15 @@ public:
                     {
                         if (sortedListPrev == nullptr)
                         {
-                            result = new ListNode(listCurr->val);
+                            result = listCurr;
                             result->next = sortedListCurr;
                             sortedListCurr = result;
                             sortedListPrev = nullptr;
                         }
                         else
                         {
-                            ListNode *temp = new ListNode(listCurr->val, sortedListCurr);
+                            ListNode *temp = listCurr;
+                            listCurr->next = sortedListCurr;
                             sortedListPrev->next = temp;
                             sortedListCurr = temp;
                         }
@@ -68,11 +71,11 @@ public:
                 }
                 if (sortedListCurr == nullptr)
                 {
-                    sortedListCurr = new ListNode(listCurr->val);
+                    sortedListCurr = listCurr;
                     sortedListPrev->next = sortedListCurr;
                 }
             }
-            listCurr = listCurr->next;
+            listCurr = next;
         }
         return result;
     }
